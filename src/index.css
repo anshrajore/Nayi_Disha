@@ -1,0 +1,163 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 33% 98%;
+    --foreground: 210 40% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 210 40% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 40% 10%;
+
+    --primary: 200 80% 30%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 30 100% 60%;
+    --secondary-foreground: 0 0% 20%;
+
+    --muted: 210 20% 90%;
+    --muted-foreground: 210 20% 40%;
+
+    --accent: 30 100% 60%;
+    --accent-foreground: 0 0% 20%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 200 80% 30%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 210 40% 10%;
+    --foreground: 210 33% 98%;
+
+    --card: 210 40% 15%;
+    --card-foreground: 210 33% 98%;
+
+    --popover: 210 40% 15%;
+    --popover-foreground: 210 33% 98%;
+
+    --primary: 200 80% 40%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 30 100% 50%;
+    --secondary-foreground: 0 0% 20%;
+
+    --muted: 210 30% 20%;
+    --muted-foreground: 210 20% 70%;
+
+    --accent: 30 100% 50%;
+    --accent-foreground: 0 0% 20%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 33% 98%;
+
+    --border: 210 30% 20%;
+    --input: 210 30% 20%;
+    --ring: 200 80% 40%;
+
+    --sidebar-background: 210 40% 15%;
+    --sidebar-foreground: 210 33% 98%;
+    --sidebar-primary: 200 80% 40%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 40% 20%;
+    --sidebar-accent-foreground: 210 33% 98%;
+    --sidebar-border: 210 40% 20%;
+    --sidebar-ring: 200 80% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .nav-link {
+    @apply flex items-center gap-2 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-muted;
+  }
+
+  .nav-link.active {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90;
+  }
+
+  .btn-primary {
+    @apply bg-nayidisha-blue text-white hover:bg-nayidisha-blue-600 transition-colors;
+  }
+  
+  .btn-secondary {
+    @apply bg-nayidisha-orange text-white hover:bg-nayidisha-orange-600 transition-colors;
+  }
+
+  .card-hover {
+    @apply hover:shadow-lg hover:-translate-y-1 transition-all duration-200;
+  }
+
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-md;
+  }
+
+  .neumorphic {
+    @apply bg-background shadow-[5px_5px_10px_rgba(0,0,0,0.1),-5px_-5px_10px_rgba(255,255,255,0.7)] dark:shadow-[5px_5px_10px_rgba(0,0,0,0.3),-5px_-5px_10px_rgba(255,255,255,0.05)];
+  }
+  
+  /* Responsive utilities */
+  .responsive-container {
+    @apply w-full px-4 sm:px-6 md:px-8 lg:px-10 mx-auto;
+  }
+  
+  .responsive-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6;
+  }
+  
+  .responsive-flex {
+    @apply flex flex-col sm:flex-row;
+  }
+  
+  .job-card-animation {
+    @apply transition-all duration-300 transform hover:scale-[1.02];
+  }
+  
+  /* Notification animation */
+  .notification-badge {
+    @apply absolute top-1 right-1 w-2 h-2 bg-nayidisha-orange rounded-full animate-pulse;
+  }
+  
+  .notification-item-new {
+    @apply bg-blue-50 dark:bg-blue-950/20 border-l-4 border-nayidisha-blue;
+  }
+}
+
+/* Media queries for responsive design */
+@media (max-width: 640px) {
+  .hide-on-mobile {
+    display: none;
+  }
+  
+  .mobile-full-width {
+    width: 100%;
+  }
+}
