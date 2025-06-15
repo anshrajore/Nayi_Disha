@@ -70,18 +70,8 @@ const Auth = () => {
     e.preventDefault();
     setIsLoading(true);
     
-    if (!reCaptchaToken) {
-      toast({
-        title: "Authentication Error",
-        description: "Please complete the CAPTCHA verification.",
-        variant: "destructive"
-      });
-      setIsLoading(false);
-      return;
-    }
-
     try {
-      const { error } = await signIn(signInForm.phone, signInForm.password, reCaptchaToken);
+      const { error } = await signIn(signInForm.phone, signInForm.password);
       
       if (error) {
         toast({
@@ -175,7 +165,9 @@ const Auth = () => {
           full_name: signUpForm.fullName,
           is_employer: signUpForm.isEmployer
         },
-        reCaptchaToken
+        {
+          captchaToken: reCaptchaToken
+        }
       );
       
       if (error) {
@@ -274,8 +266,6 @@ const Auth = () => {
                       </div>
                     </div>
                     
-                    <GoogleReCaptcha onVerify={setReCaptchaToken} />
-
                     <Button 
                       type="submit" 
                       className="w-full bg-nayidisha-blue hover:bg-nayidisha-blue-600"

@@ -1,23 +1,15 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { Session, User, AuthError } from '@supabase/supabase-js';
+import { Session, User } from '@supabase/supabase-js';
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-
-interface UserProfile {
-  id: string;
-  full_name?: string;
-  is_employer?: boolean;
-  avatar_url?: string;
-  // Add other profile fields as they are stored in your 'profiles' table
-}
 
 interface AuthContextType {
   session: Session | null;
   user: User | null;
-  profile: UserProfile | null;
+  profile: any | null;
   isLoading: boolean;
-  signIn: (phone: string, password: string, captchaToken?: string) => Promise<{ error: AuthError | null }>;
-  signUp: (phone: string, password: string, userData?: object, captchaToken?: string) => Promise<{ data?: { user: User | null; session: Session | null; } | null; error: AuthError | Error | null }>;
+  signIn: (phone: string, password: string) => Promise<{ error: any }>;
+  signUp: (phone: string, password: string, userData?: object, captchaToken?: string) => Promise<{ error: any, data?: any }>;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
@@ -27,7 +19,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profile, setProfile] = useState<any | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { toast } = useToast();
 
@@ -74,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         
       if (error) throw error;
       
-      setProfile(data as UserProfile);
+      setProfile(data);
       
     } catch (error) {
       console.error("Error fetching user profile:", error);
@@ -88,20 +80,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const signIn = async (phone: string, password: string, captchaToken?: string) => {
+  const signIn = async (phone: string, password: string) => {
     try {
       const { error } = await supabase.auth.signInWithPassword({
         phone,
-        password,
-        options: {
-          captchaToken: captchaToken
-        }
+        password
       });
       
       return { error };
-    } catch (error: unknown) {
-      const authError = error instanceof AuthError ? error : new AuthError(error instanceof Error ? error.message : String(error));
-      return { error: authError };
+    } catch (error) {
+      return { error };
     }
   };
 
@@ -117,9 +105,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
       
       return { data, error };
-    } catch (error: unknown) {
-      const authError = error instanceof AuthError ? error : new AuthError(error instanceof Error ? error.message : String(error));
-      return { error: authError };
+    } catch (error) {
+      return { error };
     }
   };
 

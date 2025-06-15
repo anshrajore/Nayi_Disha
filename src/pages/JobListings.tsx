@@ -486,21 +486,21 @@ const JobListings = () => {
                 <Filter className="h-4 w-4" />
                 <span className="font-medium">
                   {filteredJobs.length} {filteredJobs.length === 1 ? 'job' : 'jobs'} found
-                </span>
+                  </span>
               </div>
-              
-              <div className="flex items-center">
-                <span className="mr-2 text-sm whitespace-nowrap">Sort by:</span>
-                <Select value={sortBy} onValueChange={handleSortChange}>
-                  <SelectTrigger className="w-[140px]">
-                    <SelectValue placeholder="Most Recent" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="recent">Most Recent</SelectItem>
-                    <SelectItem value="salary-high">Salary: High to Low</SelectItem>
-                    <SelectItem value="salary-low">Salary: Low to High</SelectItem>
-                  </SelectContent>
-                </Select>
+                
+                <div className="flex items-center">
+                  <span className="mr-2 text-sm whitespace-nowrap">Sort by:</span>
+                  <Select value={sortBy} onValueChange={handleSortChange}>
+                    <SelectTrigger className="w-[140px]">
+                      <SelectValue placeholder="Most Recent" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="recent">Most Recent</SelectItem>
+                      <SelectItem value="salary-high">Salary: High to Low</SelectItem>
+                      <SelectItem value="salary-low">Salary: Low to High</SelectItem>
+                    </SelectContent>
+                  </Select>
               </div>
             </div>
             
@@ -535,9 +535,9 @@ const JobListings = () => {
                           </Badge>
                         </div>
                       )}
-                      <JobCard 
-                        {...job} 
-                        onApply={() => handleApplyJob(job.id)} 
+                  <JobCard 
+                    {...job} 
+                    onApply={() => handleApplyJob(job.id)} 
                         className={cn(
                           "transition-all duration-200",
                           isFeatured 

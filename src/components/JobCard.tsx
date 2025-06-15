@@ -50,26 +50,27 @@ const JobCard = ({
   const [isApplied, setIsApplied] = useState(false);
   const [isApplying, setIsApplying] = useState(false);
   const [applicationStatus, setApplicationStatus] = useState<'applied' | 'shortlisted' | 'interviewed' | 'rejected' | 'hired' | null>(null);
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
 
   // Check if user has already applied for this job
   useEffect(() => {
     const checkIfApplied = async () => {
       try {
-        // const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session } } = await supabase.auth.getSession();
         
-        // if (session) {
-        //   const { data } = await supabase
-        //     .from('applications')
-        //     .select('id, status')
-        //     .eq('job_id', id)
-        //     .eq('applicant_id', session.user.id)
-        //     .single();
+        if (session) {
+          const { data } = await supabase
+            .from('applications')
+            .select('id, status')
+            .eq('job_id', id)
+            .eq('applicant_id', session.user.id)
+            .single();
             
-        //   if (data) {
-        //     setIsApplied(true);
-        //     setApplicationStatus(data.status as 'applied' | 'shortlisted' | 'interviewed' | 'rejected' | 'hired');
-        //   }
-        // }
+          if (data) {
+            setIsApplied(true);
+            setApplicationStatus(data.status as 'applied' | 'shortlisted' | 'interviewed' | 'rejected' | 'hired');
+          }
+        }
       } catch (error) {
         console.error("Error checking application status:", error);
       }
@@ -79,48 +80,16 @@ const JobCard = ({
   }, [id]);
 
   const handleApply = async () => {
-    // const { data: { session } } = await supabase.auth.getSession();
+    const { data: { session } } = await supabase.auth.getSession();
     
-    // if (!session) {
-    //   setShowAuthDialog(true);
-    //   return;
-    // }
+    if (!session) {
+      setShowAuthDialog(true);
+      return;
+    }
 
     setIsApplying(true);
     
     try {
-      // For now, setting a placeholder applicant_id. In a real application, this should be handled properly.
-      const applicantId = 'YOUR_PLACEHOLDER_APPLICANT_ID'; // Replace with a valid ID if testing database insertion without login
-
-      // Check if the user has already applied (simplified, without session)
-      const { data: existingApplication, error: checkError } = await supabase
-        .from('applications')
-        .select('id')
-        .eq('job_id', id)
-        .eq('applicant_id', applicantId)
-        .single();
-        
-      if (existingApplication) {
-        toast.info("Already applied", {
-          description: "You have already applied for this job.",
-        });
-        setIsApplied(true); // Update state even if not logged in
-        setIsApplying(false);
-        return;
-      }
-
-      // Create application
-      const { data, error } = await supabase
-        .from('applications')
-        .insert({
-          job_id: id,
-          applicant_id: applicantId,
-          status: 'applied'
-        })
-        .select();
-
-      if (error) throw error;
-
       if (onApply) {
         await onApply(id);
         setIsApplied(true);
@@ -129,13 +98,18 @@ const JobCard = ({
           description: "You'll be notified when the employer responds.",
         });
       }
-    } catch (error: unknown) {
+    } catch (error) {
       toast.error("Failed to submit application", {
-        description: error instanceof Error ? error.message : "Please try again later.",
+        description: "Please try again later.",
       });
     } finally {
       setIsApplying(false);
     }
+  };
+
+  const handleAuth = () => {
+    setShowAuthDialog(false);
+    navigate('/auth');
   };
 
   const getStatusBadge = () => {
@@ -245,7 +219,7 @@ const JobCard = ({
         </CardContent>
       </Card>
 
-      {/* <Dialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
+      <Dialog open={showAuthDialog} onOpenChange={setShowAuthDialog}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Sign in to Apply</DialogTitle>
@@ -270,7 +244,7 @@ const JobCard = ({
             </Button>
           </DialogFooter>
         </DialogContent>
-      </Dialog> */}
+      </Dialog>
     </>
   );
 };

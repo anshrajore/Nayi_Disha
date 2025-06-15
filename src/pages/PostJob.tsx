@@ -86,43 +86,43 @@ const facilities: Facility[] = [
 
 // Define the initial state for formData
 const initialFormData = {
-  title: '',
-  jobType: '',
-  category: '',
-  workShift: '',
-  numPositions: 1,
-  pincode: '',
-  state: '',
-  city: '',
-  area: '',
-  address: '',
-  salaryPeriod: 'monthly',
-  salaryMin: 10000,
-  salaryMax: 20000,
-  overtimePay: false,
-  incentives: '',
-  providedFacilities: [] as string[],
-  shiftStart: '',
-  shiftEnd: '',
-  workDays: [] as string[],
-  startDate: 'immediate',
-  specificStartDate: '',
-  minEducation: '',
-  experienceMonths: 0,
-  minAge: 18,
-  maxAge: 50,
-  languages: [] as string[],
-  physicalRequirements: '',
-  certifications: '',
-  description: '',
-  companyName: '',
-  contactName: '',
-  contactPhone: '',
-  contactEmail: '',
-  companyLogo: '',
-  siteImages: [] as string[],
-  siteVideo: '',
-  isHighlighted: false
+    title: '',
+    jobType: '',
+    category: '',
+    workShift: '',
+    numPositions: 1,
+    pincode: '',
+    state: '',
+    city: '',
+    area: '',
+    address: '',
+    salaryPeriod: 'monthly',
+    salaryMin: 10000,
+    salaryMax: 20000,
+    overtimePay: false,
+    incentives: '',
+    providedFacilities: [] as string[],
+    shiftStart: '',
+    shiftEnd: '',
+    workDays: [] as string[],
+    startDate: 'immediate',
+    specificStartDate: '',
+    minEducation: '',
+    experienceMonths: 0,
+    minAge: 18,
+    maxAge: 50,
+    languages: [] as string[],
+    physicalRequirements: '',
+    certifications: '',
+    description: '',
+    companyName: '',
+    contactName: '',
+    contactPhone: '',
+    contactEmail: '',
+    companyLogo: '',
+    siteImages: [] as string[],
+    siteVideo: '',
+    isHighlighted: false
 };
 
 // Define the type for the formData based on its initial state
@@ -340,8 +340,8 @@ const PostJob = () => {
       // }
       
       // For now, setting a placeholder employer_id. In a real application, this should be handled properly.
-      const employerId = null; // Set to null if job can be posted without a logged-in employer
-
+      const employerId = 'YOUR_PLACEHOLDER_EMPLOYER_ID'; // Replace with a valid ID if testing database insertion without login
+      
       const { data, error } = await supabase
         .from('jobs')
         .insert({
@@ -380,22 +380,13 @@ const PostJob = () => {
         throw error;
       }
       
-      if (data && data.length > 0) {
-        toast({
-          title: "Job posted successfully!",
-          description: "Your job listing is now live and visible to job seekers",
-          variant: "success"
-        });
-        
-        navigate(`/jobs?newJob=${data[0].id}`);
-      } else {
-        // This case should ideally not happen if Supabase insert is successful, but provides a fallback
-        toast({
-          title: "Error posting job",
-          description: "Job was not returned after successful post. Please check the dashboard manually.",
-          variant: "destructive"
-        });
-      }
+      toast({
+        title: "Job posted successfully!",
+        description: "Your job listing is now live and visible to job seekers",
+        variant: "success"
+      });
+      
+      navigate(`/jobs?newJob=${data[0].id}`);
       
     } catch (error: unknown) {
       toast({

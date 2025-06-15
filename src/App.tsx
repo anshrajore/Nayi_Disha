@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { UIToaster } from "@/components/ui/toaster";
 import { Toaster } from "@/components/ui/sonner";
@@ -17,7 +18,6 @@ import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import PostJob from "./pages/PostJob";
 import Dashboard from "./pages/Dashboard";
-import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 // Create a client
 const queryClient = new QueryClient({
@@ -30,13 +30,6 @@ const queryClient = new QueryClient({
 });
 
 const App = () => {
-  const recaptchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY; // For Vite, adjust for other build tools
-
-  if (!recaptchaSiteKey) {
-    console.error("VITE_RECAPTCHA_SITE_KEY is not defined. CAPTCHA will not work.");
-    // You might want to display a user-friendly error or fallback here
-  }
-
   return (
     <React.StrictMode>
       <QueryClientProvider client={queryClient}>
@@ -53,15 +46,7 @@ const App = () => {
                   <Route path="/skills" element={<SkillDevelopment />} />
                   <Route path="/employers" element={<Employers />} />
                   <Route path="/about" element={<About />} />
-                  <Route path="/auth" element={
-                    recaptchaSiteKey ? (
-                      <GoogleReCaptchaProvider reCaptchaKey={recaptchaSiteKey}>
-                        <Auth />
-                      </GoogleReCaptchaProvider>
-                    ) : (
-                      <Auth /> // Fallback if no site key, though CAPTCHA errors might occur
-                    )
-                  } />
+                  <Route path="/auth" element={<Auth />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/post-job" element={<PostJob />} />
                   <Route path="/dashboard" element={<Dashboard />} />
